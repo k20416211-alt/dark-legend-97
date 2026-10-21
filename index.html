@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <title>DARK LEGEND 97</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #f5e5bd;
+      background:
+        radial-gradient(ellipse at top, #33220c 0%, #101010 45%, #030303 100%);
+      text-align: center;
+    }
+
+    .player {
+      width: min(92%, 480px);
+      margin: 35px auto;
+      padding: 28px 22px;
+      border: 1px solid #b98b35;
+      border-radius: 22px;
+      background: linear-gradient(145deg, #191919, #080808);
+      box-shadow: 0 0 30px #a8792733;
+    }
+
+    .crown {
+      font-size: 52px;
+      filter: drop-shadow(0 0 12px #d99a24);
+    }
+
+    h1 {
+      margin: 10px 0;
+      color: #e7bd67;
+      letter-spacing: 3px;
+      font-size: 27px;
+      text-shadow: 0 0 15px #b77925;
+    }
+
+    .subtitle {
+      color: #9bbfe9;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 28px;
+    }
+
+    .artwork {
+      width: 190px;
+      height: 190px;
+      margin: 0 auto 24px;
+      border: 2px solid #c99a42;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #25364a, #101010 65%);
+      box-shadow: 0 0 25px #4b9eff55, inset 0 0 25px #d69b3155;
+      font-size: 75px;
+    }
+
+    h2 {
+      font-size: 21px;
+      margin-bottom: 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      color: #8ebdf5;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 15px 0;
+      padding: 12px;
+      color: #f5e5bd;
+      background: #171717;
+      border: 1px solid #856329;
+      border-radius: 10px;
+    }
+
+    audio {
+      width: 100%;
+      margin: 15px 0;
+      accent-color: #d6a542;
+    }
+
+    .hint {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 22px;
+    }
+
+    .footer {
+      margin-top: 25px;
+      color: #a98545;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="player">
+    <div class="crown">♛</div>
+
+    <h1>DARK LEGEND 97</h1>
+    <div class="subtitle">YOUR MUSIC · YOUR LEGEND</div>
+
+    <div class="artwork">🎧</div>
+
+    <h2 id="songTitle">Válassz egy zenét!</h2>
+    <div class="status">◆ ROYAL MUSIC PLAYER ◆</div>
+
+    <input id="musicFiles" type="file" accept="audio/*" multiple>
+
+    <audio id="audioPlayer" controls preload="metadata"></audio>
+
+    <div class="hint">
+      Válaszd ki az MP3-fájljaidat a készülékedről.<br>
+      Kattints egy zenére, és indulhat a lejátszás!
+    </div>
+
+    <div class="footer">♛ DARK LEGEND 97 ♛</div>
+  </main>
+
+  <script>
+    const musicFiles = document.getElementById("musicFiles");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const songTitle = document.getElementById("songTitle");
+
+    let songs = [];
+    let currentSong = 0;
+
+    musicFiles.addEventListener("change", function () {
+      songs = Array.from(this.files);
+
+      if (songs.length === 0) return;
+
+      currentSong = 0;
+      playSong(currentSong);
+    });
+
+    function playSong(index) {
+      const song = songs[index];
+
+      if (!song) return;
+
+      audioPlayer.src = URL.createObjectURL(song);
+      songTitle.textContent = song.name.replace(/\.[^/.]+$/, "");
+
+      audioPlayer.play().catch(() => {
+        // Ha a böngésző nem indítja el automatikusan,
+        // nyomd meg a lejátszás gombot.
+      });
+    }
+
+    audioPlayer.addEventListener("ended", function () {
+      if (currentSong < songs.length - 1) {
+        currentSong++;
+        playSong(currentSong);
+      }
+    });
+  </script>
+</body>
+</html>
