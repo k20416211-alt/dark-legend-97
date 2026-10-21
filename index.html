@@ -1,175 +1,991 @@
+```html
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080808">
-  <title>DARK LEGEND 97</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="DARK LEGEND 97 – Royal Music Player">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>DARK LEGEND 97</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+:root {
+  --gold: #e7bd67;
+  --gold-dark: #a87927;
+  --blue: #8ebdf5;
+  --background: #080808;
+  --panel: #171717;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      color: #f5e5bd;
-      background:
-        radial-gradient(ellipse at top, #33220c 0%, #101010 45%, #030303 100%);
-      text-align: center;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .player {
-      width: min(92%, 480px);
-      margin: 35px auto;
-      padding: 28px 22px;
-      border: 1px solid #b98b35;
-      border-radius: 22px;
-      background: linear-gradient(145deg, #191919, #080808);
-      box-shadow: 0 0 30px #a8792733;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+  color: #f5e5bd;
+  background: radial-gradient(
+    ellipse at top,
+    #33220c 0%,
+    #101010 45%,
+    #030303 100%
+  );
+}
 
-    .crown {
-      font-size: 52px;
-      filter: drop-shadow(0 0 12px #d99a24);
-    }
+button, input {
+  font: inherit;
+}
 
-    h1 {
-      margin: 10px 0;
-      color: #e7bd67;
-      letter-spacing: 3px;
-      font-size: 27px;
-      text-shadow: 0 0 15px #b77925;
-    }
+button {
+  cursor: pointer;
+}
 
-    .subtitle {
-      color: #9bbfe9;
-      font-size: 12px;
-      letter-spacing: 4px;
-      margin-bottom: 28px;
-    }
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
 
-    .artwork {
-      width: 190px;
-      height: 190px;
-      margin: 0 auto 24px;
-      border: 2px solid #c99a42;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle, #25364a, #101010 65%);
-      box-shadow: 0 0 25px #4b9eff55, inset 0 0 25px #d69b3155;
-      font-size: 75px;
-    }
+.player {
+  width: min(94%, 540px);
+  margin: auto;
+  padding: 24px;
+  border: 1px solid var(--gold-dark);
+  border-radius: 24px;
+  background: linear-gradient(145deg, #191919, #080808);
+  box-shadow: 0 0 30px #a8792733;
+}
 
-    h2 {
-      font-size: 21px;
-      margin-bottom: 7px;
-      overflow-wrap: anywhere;
-    }
+header {
+  text-align: center;
+}
 
-    .status {
-      color: #8ebdf5;
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
+.crown {
+  font-size: 48px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 12px #d99a24);
+}
 
-    input[type="file"] {
-      width: 100%;
-      margin: 15px 0;
-      padding: 12px;
-      color: #f5e5bd;
-      background: #171717;
-      border: 1px solid #856329;
-      border-radius: 10px;
-    }
+h1 {
+  margin: 8px 0;
+  color: var(--gold);
+  font-size: clamp(23px, 5vw, 30px);
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px #b77925;
+}
 
-    audio {
-      width: 100%;
-      margin: 15px 0;
-      accent-color: #d6a542;
-    }
+.subtitle {
+  margin-bottom: 25px;
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: 3px;
+}
 
-    .hint {
-      color: #aaa;
-      font-size: 12px;
-      line-height: 1.6;
-      margin-top: 22px;
-    }
+.artwork {
+  width: 190px;
+  height: 190px;
+  max-width: 65vw;
+  max-height: 65vw;
+  margin: 0 auto 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: radial-gradient(circle, #25364a, #101010 65%);
+  box-shadow: 0 0 25px #4b9eff55, inset 0 0 25px #d69b3155;
+  font-size: 65px;
+}
 
-    .footer {
-      margin-top: 25px;
-      color: #a98545;
-      font-size: 11px;
-      letter-spacing: 2px;
-    }
-  </style>
+.artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  margin-bottom: 18px;
+  color: var(--blue);
+  font-size: 12px;
+  text-align: center;
+}
+
+.section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #49391f;
+}
+
+.section h3 {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.field {
+  margin: 14px 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #d4b978;
+  font-size: 12px;
+}
+
+input[type="file"],
+input[type="search"],
+input[type="url"] {
+  width: 100%;
+  padding: 12px;
+  color: #f5e5bd;
+  background: var(--panel);
+  border: 1px solid #856329;
+  border-radius: 10px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #d6a542;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.btn {
+  padding: 11px 13px;
+  color: #f5e5bd;
+  background: #191919;
+  border: 1px solid #765722;
+  border-radius: 12px;
+}
+
+.btn:hover {
+  border-color: var(--gold);
+  background: #282116;
+}
+
+.btn.primary {
+  color: #100d07;
+  font-weight: bold;
+  background: linear-gradient(135deg, #d7ad52, #8f641e);
+}
+
+.btn.active {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
+.transport .btn {
+  min-width: 48px;
+  font-size: 19px;
+}
+
+.transport .primary {
+  min-width: 64px;
+  font-size: 22px;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  color: #bbb;
+  font-size: 11px;
+}
+
+.volume-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.song-list {
+  display: grid;
+  gap: 7px;
+  max-height: 270px;
+  overflow-y: auto;
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  text-align: left;
+  background: #101010;
+  border: 1px solid #29241a;
+  border-radius: 10px;
+}
+
+.song.current {
+  border-color: var(--gold);
+  background: #211a0d;
+}
+
+.song-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.song button {
+  padding: 5px;
+  color: var(--gold);
+  background: transparent;
+  border: 0;
+}
+
+.message {
+  min-height: 18px;
+  margin-top: 10px;
+  color: var(--blue);
+  font-size: 12px;
+  text-align: center;
+}
+
+.hint {
+  margin-top: 18px;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.footer {
+  margin-top: 24px;
+  color: #a98545;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+details summary {
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+@media (max-width: 390px) {
+  .player {
+    padding: 18px;
+  }
+
+  .artwork {
+    width: 160px;
+    height: 160px;
+  }
+
+  .btn {
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+</style>
 </head>
 
 <body>
-  <main class="player">
-    <div class="crown">♛</div>
+<main class="player">
 
-    <h1>DARK LEGEND 97</h1>
-    <div class="subtitle">YOUR MUSIC · YOUR LEGEND</div>
+<header>
+  <div class="crown">♛</div>
+  <h1>DARK LEGEND 97</h1>
+  <div class="subtitle">YOUR MUSIC · YOUR LEGEND</div>
+</header>
 
-    <div class="artwork">🎧</div>
+<div class="artwork" id="artwork">🎧</div>
 
-    <h2 id="songTitle">Válassz egy zenét!</h2>
-    <div class="status">◆ ROYAL MUSIC PLAYER ◆</div>
+<h2 id="songTitle">Válassz egy zenét!</h2>
+<div class="status" id="status">◆ ROYAL MUSIC PLAYER ◆</div>
 
+<div class="toolbar transport">
+  <button class="btn" id="shuffleBtn" aria-label="Véletlen lejátszás">🔀</button>
+  <button class="btn" id="prevBtn" aria-label="Előző szám">⏮</button>
+  <button class="btn primary" id="playBtn" aria-label="Lejátszás">▶</button>
+  <button class="btn" id="nextBtn" aria-label="Következő szám">⏭</button>
+  <button class="btn" id="repeatBtn" aria-label="Ismétlés">🔁</button>
+</div>
+
+<div class="timeline">
+  <span id="currentTime">0:00</span>
+  <input id="seekBar" type="range" min="0" max="1000" value="0" aria-label="Lejátszás pozíciója">
+  <span id="duration">0:00</span>
+</div>
+
+<div class="volume-row">
+  <span>🔉</span>
+  <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Hangerő">
+  <button class="btn" id="muteBtn" aria-label="Némítás">🔊</button>
+</div>
+
+<div class="section">
+  <h3>♫ SAJÁT ZENÉK</h3>
+
+  <div class="field">
+    <label for="musicFiles">Válassz MP3- vagy más hangfájlokat</label>
     <input id="musicFiles" type="file" accept="audio/*" multiple>
+  </div>
 
-    <audio id="audioPlayer" controls preload="metadata"></audio>
+  <div class="toolbar">
+    <button class="btn primary" id="addFilesBtn">＋ Zenék hozzáadása</button>
+    <button class="btn" id="clearBtn">Lista ürítése</button>
+  </div>
 
-    <div class="hint">
-      Válaszd ki az MP3-fájljaidat a készülékedről.<br>
-      Kattints egy zenére, és indulhat a lejátszás!
+  <div class="field">
+    <label for="search">Zene keresése</label>
+    <input id="search" type="search" placeholder="Írd be a szám címét…">
+  </div>
+
+  <div id="songList" class="song-list"></div>
+  <div id="listMessage" class="message">Tölts be zenéket a kezdéshez.</div>
+</div>
+
+<div class="section">
+  <h3>🌐 ONLINE HANGFÁJL</h3>
+  <div class="field">
+    <label for="audioUrl">Közvetlen hangfájl internetes címe</label>
+    <input id="audioUrl" type="url" placeholder="https://pelda.hu/zene.mp3">
+  </div>
+  <div class="toolbar">
+    <button class="btn" id="playUrlBtn">Online zene lejátszása</button>
+  </div>
+  <p class="hint">
+    Közvetlen MP3-, OGG- vagy WAV-linket használj.
+    A YouTube-oldal linkje önmagában nem hangfájl.
+  </p>
+</div>
+
+<div class="section">
+  <h3>❤️ KEDVENCEK</h3>
+  <div class="toolbar">
+    <button class="btn" id="favoriteBtn">♡ Kedvencekhez</button>
+    <button class="btn" id="showFavoritesBtn">Kedvencek listája</button>
+    <button class="btn" id="showAllBtn">Összes zene</button>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🎚️ HANGSZÍNSZABÁLYZÓ</h3>
+
+  <details>
+    <summary>Beállítások megnyitása</summary>
+
+    <div class="field">
+      <label for="bass">Mély hangok</label>
+      <input id="bass" type="range" min="-12" max="12" value="0">
+      <div id="bassValue" class="hint">0 dB</div>
     </div>
 
-    <div class="footer">♛ DARK LEGEND 97 ♛</div>
-  </main>
+    <div class="field">
+      <label for="treble">Magas hangok</label>
+      <input id="treble" type="range" min="-12" max="12" value="0">
+      <div id="trebleValue" class="hint">0 dB</div>
+    </div>
 
-  <script>
-    const musicFiles = document.getElementById("musicFiles");
-    const audioPlayer = document.getElementById("audioPlayer");
-    const songTitle = document.getElementById("songTitle");
+    <button class="btn" id="resetEqBtn">Visszaállítás</button>
+  </details>
+</div>
 
-    let songs = [];
-    let currentSong = 0;
+<div class="section">
+  <h3>📱 TELEPÍTÉS</h3>
+  <p class="hint">
+    Ha a böngésző támogatja, telepítheted az alkalmazást
+    a telefonod kezdőképernyőjére.
+  </p>
+  <div class="toolbar">
+    <button class="btn" id="installBtn" hidden>＋ Telepítés</button>
+  </div>
+</div>
 
-    musicFiles.addEventListener("change", function () {
-      songs = Array.from(this.files);
+<div id="message" class="message" role="status" aria-live="polite"></div>
 
-      if (songs.length === 0) return;
+<div class="hint">
+  A saját zenék kiválasztása után internet nélkül is lejátszhatod
+  őket, amíg a böngésző hozzáfér a kiválasztott fájlokhoz.
+</div>
 
-      currentSong = 0;
-      playSong(currentSong);
+<div class="footer">♛ DARK LEGEND 97 ♛</div>
+</main>
+
+<audio id="audioPlayer" preload="metadata"></audio>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+
+  const audio = $('audioPlayer');
+  const fileInput = $('musicFiles');
+
+  let songs = [];
+  let currentId = null;
+  let shuffle = false;
+  let repeat = 'off';
+  let favorites = new Set();
+  let favoritesOnly = false;
+  let objectUrl = null;
+  let audioContext = null;
+  let bassFilter = null;
+  let trebleFilter = null;
+  let installPrompt = null;
+
+  try {
+    favorites = new Set(
+      JSON.parse(localStorage.getItem('dl97-favorites') || '[]')
+    );
+  } catch {}
+
+  function say(text) {
+    $('message').textContent = text;
+  }
+
+  function songName(song) {
+    return song.name.replace(/\.[^/.]+$/, '');
+  }
+
+  function currentSong() {
+    return songs.find(song => song.id === currentId);
+  }
+
+  function formatTime(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, '0');
+
+    return `${minutes}:${secs}`;
+  }
+
+  function saveFavorites() {
+    try {
+      localStorage.setItem(
+        'dl97-favorites',
+        JSON.stringify([...favorites])
+      );
+    } catch {
+      say('A kedvencek mentése nem sikerült.');
+    }
+  }
+
+  function releaseObjectUrl() {
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+    }
+  }
+
+  function renderList() {
+    const query = $('search').value.trim().toLocaleLowerCase('hu');
+
+    const visible = songs.filter(song => {
+      const matches = songName(song)
+        .toLocaleLowerCase('hu')
+        .includes(query);
+
+      return matches &&
+        (!favoritesOnly || favorites.has(song.id));
     });
 
-    function playSong(index) {
-      const song = songs[index];
+    const list = $('songList');
+    list.replaceChildren();
 
-      if (!song) return;
-
-      audioPlayer.src = URL.createObjectURL(song);
-      songTitle.textContent = song.name.replace(/\.[^/.]+$/, "");
-
-      audioPlayer.play().catch(() => {
-        // Ha a böngésző nem indítja el automatikusan,
-        // nyomd meg a lejátszás gombot.
-      });
+    if (!visible.length) {
+      $('listMessage').textContent =
+        songs.length
+          ? 'Nincs megjeleníthető zene.'
+          : 'Tölts be zenéket a kezdéshez.';
+      return;
     }
 
-    audioPlayer.addEventListener("ended", function () {
-      if (currentSong < songs.length - 1) {
-        currentSong++;
-        playSong(currentSong);
-      }
+    $('listMessage').textContent = `${visible.length} zene`;
+
+    visible.forEach(song => {
+      const row = document.createElement('div');
+      row.className = 'song' +
+        (song.id === currentId ? ' current' : '');
+
+      const play = document.createElement('button');
+      play.type = 'button';
+      play.textContent =
+        song.id === currentId && !audio.paused ? '❚❚' : '▶';
+
+      play.setAttribute('aria-label', songName(song) + ' lejátszása');
+
+      play.addEventListener('click', () => {
+        if (song.id === currentId) {
+          togglePlay();
+        } else {
+          playSong(song.id);
+        }
+      });
+
+      const name = document.createElement('div');
+      name.className = 'song-name';
+      name.textContent = songName(song);
+
+      const fav = document.createElement('button');
+      fav.type = 'button';
+      fav.textContent = favorites.has(song.id) ? '♥' : '♡';
+      fav.setAttribute('aria-label', 'Kedvenc váltása');
+      fav.addEventListener('click', () => toggleFavorite(song.id));
+
+      row.append(play, name, fav);
+      list.append(row);
     });
-  </script>
+  }
+
+  function addFiles(files) {
+    const accepted = Array.from(files).filter(file =>
+      file.type.startsWith('audio/') ||
+      /\.(mp3|m4a|aac|ogg|oga|wav|flac|opus|weba)$/i.test(file.name)
+    );
+
+    if (!accepted.length) {
+      say('Nem találtam lejátszható hangfájlt.');
+      return;
+    }
+
+    const added = accepted.map((file, index) => ({
+      id: `local-${Date.now()}-${index}-${Math.random()}`,
+      name: file.name,
+      file
+    }));
+
+    songs.push(...added);
+    favoritesOnly = false;
+    renderList();
+
+    say(`${added.length} zene hozzáadva.`);
+
+    if (!currentId) {
+      playSong(added[0].id);
+    }
+  }
+
+  function playSong(id) {
+    const song = songs.find(item => item.id === id);
+    if (!song) return;
+
+    currentId = id;
+
+    audio.pause();
+    releaseObjectUrl();
+
+    if (song.file) {
+      objectUrl = URL.createObjectURL(song.file);
+      audio.src = objectUrl;
+      $('status').textContent = '◆ HELYI ZENE ◆';
+    } else {
+      audio.src = song.url;
+      $('status').textContent = '◆ ONLINE HANGFÁJL ◆';
+    }
+
+    $('songTitle').textContent = songName(song);
+
+    const artwork = $('artwork');
+    artwork.replaceChildren();
+    artwork.textContent = '🎧';
+
+    renderList();
+    updateFavoriteButton();
+
+    audio.play().then(() => {
+      $('playBtn').textContent = '❚❚';
+      say('Most szól: ' + songName(song));
+    }).catch(() => {
+      $('playBtn').textContent = '▶';
+      say('Nyomd meg a lejátszás gombot, vagy ellenőrizd a hangfájlt.');
+    });
+  }
+
+  function togglePlay() {
+    if (!audio.src) {
+      if (songs.length) {
+        playSong(songs[0].id);
+      } else {
+        say('Először válassz zenét.');
+        fileInput.click();
+      }
+      return;
+    }
+
+    if (audio.paused) {
+      audio.play().catch(() => {
+        say('A lejátszás nem sikerült.');
+      });
+    } else {
+      audio.pause();
+    }
+  }
+
+  function nextSong(direction = 1) {
+    if (!songs.length) {
+      say('Először adj hozzá zenéket.');
+      return;
+    }
+
+    const pool = songs.filter(song =>
+      !favoritesOnly || favorites.has(song.id)
+    );
+
+    if (!pool.length) {
+      say('Nincs szám ebben a listában.');
+      return;
+    }
+
+    let index = pool.findIndex(song => song.id === currentId);
+
+    if (shuffle && pool.length > 1) {
+      let next = index;
+
+      while (next === index) {
+        next = Math.floor(Math.random() * pool.length);
+      }
+
+      playSong(pool[next].id);
+      return;
+    }
+
+    index = index < 0
+      ? 0
+      : (index + direction + pool.length) % pool.length;
+
+    playSong(pool[index].id);
+  }
+
+  function toggleFavorite(id = currentId) {
+    if (!id) {
+      say('Először válassz egy zenét.');
+      return;
+    }
+
+    if (favorites.has(id)) {
+      favorites.delete(id);
+    } else {
+      favorites.add(id);
+    }
+
+    saveFavorites();
+    renderList();
+    updateFavoriteButton();
+  }
+
+  function updateFavoriteButton() {
+    const song = currentSong();
+
+    $('favoriteBtn').textContent =
+      song && favorites.has(song.id)
+        ? '♥ Kedvencekből törlés'
+        : '♡ Kedvencekhez';
+  }
+
+  function addOnlineSong() {
+    const value = $('audioUrl').value.trim();
+
+    try {
+      const url = new URL(value);
+
+      if (!['http:', 'https:'].includes(url.protocol)) {
+        throw new Error('invalid URL');
+      }
+
+      const fileName = decodeURIComponent(
+        url.pathname.split('/').pop() || 'Online zene'
+      );
+
+      const song = {
+        id: `online-${Date.now()}`,
+        name: fileName || 'Online zene',
+        url: url.href
+      };
+
+      songs.push(song);
+      favoritesOnly = false;
+      renderList();
+      playSong(song.id);
+
+    } catch {
+      say('Adj meg egy érvényes HTTPS- vagy HTTP-linket.');
+    }
+  }
+
+  async function setupEqualizer() {
+    if (audioContext) {
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
+      return;
+    }
+
+    const AudioContextClass =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) {
+      say('A böngésző nem támogatja a hangszínszabályzót.');
+      return;
+    }
+
+    try {
+      audioContext = new AudioContextClass();
+
+      const source = audioContext.createMediaElementSource(audio);
+
+      bassFilter = audioContext.createBiquadFilter();
+      bassFilter.type = 'lowshelf';
+      bassFilter.frequency.value = 200;
+
+      trebleFilter = audioContext.createBiquadFilter();
+      trebleFilter.type = 'highshelf';
+      trebleFilter.frequency.value = 3000;
+
+      source.connect(bassFilter);
+      bassFilter.connect(trebleFilter);
+      trebleFilter.connect(audioContext.destination);
+
+      await audioContext.resume();
+
+    } catch {
+      say('A hangszínszabályzó nem érhető el.');
+    }
+  }
+
+  fileInput.addEventListener('change', () => {
+    addFiles(fileInput.files);
+    fileInput.value = '';
+  });
+
+  $('addFilesBtn').addEventListener('click', () => fileInput.click());
+  $('playBtn').addEventListener('click', togglePlay);
+  $('prevBtn').addEventListener('click', () => {
+    if (audio.currentTime > 3) {
+      audio.currentTime = 0;
+    } else {
+      nextSong(-1);
+    }
+  });
+  $('nextBtn').addEventListener('click', () => nextSong(1));
+
+  $('shuffleBtn').addEventListener('click', () => {
+    shuffle = !shuffle;
+    $('shuffleBtn').classList.toggle('active', shuffle);
+    say(shuffle
+      ? 'Véletlen lejátszás bekapcsolva.'
+      : 'Véletlen lejátszás kikapcsolva.');
+  });
+
+  $('repeatBtn').addEventListener('click', () => {
+    repeat = repeat === 'off'
+      ? 'all'
+      : repeat === 'all'
+        ? 'one'
+        : 'off';
+
+    $('repeatBtn').textContent = repeat === 'one' ? '🔂' : '🔁';
+    $('repeatBtn').classList.toggle('active', repeat !== 'off');
+
+    say(
+      repeat === 'off'
+        ? 'Ismétlés kikapcsolva.'
+        : repeat === 'all'
+          ? 'A lista ismétlődik.'
+          : 'Az aktuális szám ismétlődik.'
+    );
+  });
+
+  audio.addEventListener('play', () => {
+    $('playBtn').textContent = '❚❚';
+    renderList();
+  });
+
+  audio.addEventListener('pause', () => {
+    $('playBtn').textContent = '▶';
+    renderList();
+  });
+
+  audio.addEventListener('loadedmetadata', () => {
+    $('duration').textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    $('currentTime').textContent = formatTime(audio.currentTime);
+    $('duration').textContent = formatTime(audio.duration);
+
+    if (
+      Number.isFinite(audio.duration) &&
+      audio.duration > 0 &&
+      !$('seekBar').matches(':active')
+    ) {
+      $('seekBar').value =
+        Math.round(audio.currentTime / audio.duration * 1000);
+    }
+  });
+
+  $('seekBar').addEventListener('input', () => {
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      audio.currentTime =
+        Number($('seekBar').value) / 1000 * audio.duration;
+    }
+  });
+
+  $('volume').addEventListener('input', () => {
+    audio.volume = Number($('volume').value);
+    audio.muted = false;
+    $('muteBtn').textContent = '🔊';
+  });
+
+  audio.volume = 0.8;
+
+  $('muteBtn').addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    $('muteBtn').textContent = audio.muted ? '🔇' : '🔊';
+  });
+
+  audio.addEventListener('ended', () => {
+    if (repeat === 'one') {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    } else if (
+      repeat === 'all' ||
+      shuffle ||
+      songs.findIndex(song => song.id === currentId) < songs.length - 1
+    ) {
+      nextSong(1);
+    } else {
+      say('Vége a lejátszási listának.');
+    }
+  });
+
+  audio.addEventListener('error', () => {
+    if (audio.src) {
+      say('A hangfájl nem tölthető be. Ellenőrizd a linket vagy a fájlt.');
+    }
+  });
+
+  $('search').addEventListener('input', renderList);
+
+  $('favoriteBtn').addEventListener('click', () => toggleFavorite());
+
+  $('showFavoritesBtn').addEventListener('click', () => {
+    favoritesOnly = true;
+    renderList();
+  });
+
+  $('showAllBtn').addEventListener('click', () => {
+    favoritesOnly = false;
+    renderList();
+  });
+
+  $('clearBtn').addEventListener('click', () => {
+    songs = [];
+    currentId = null;
+
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+
+    releaseObjectUrl();
+
+    $('songTitle').textContent = 'Válassz egy zenét!';
+    $('status').textContent = '◆ ROYAL MUSIC PLAYER ◆';
+    $('artwork').textContent = '🎧';
+
+    renderList();
+    updateFavoriteButton();
+    say('A lejátszási lista kiürült.');
+  });
+
+  $('playUrlBtn').addEventListener('click', addOnlineSong);
+
+  $('audioUrl').addEventListener('keydown', event => {
+    if (event.key === 'Enter') addOnlineSong();
+  });
+
+  $('bass').addEventListener('input', async () => {
+    await setupEqualizer();
+
+    if (bassFilter) {
+      bassFilter.gain.value = Number($('bass').value);
+    }
+
+    $('bassValue').textContent = $('bass').value + ' dB';
+  });
+
+  $('treble').addEventListener('input', async () => {
+    await setupEqualizer();
+
+    if (trebleFilter) {
+      trebleFilter.gain.value = Number($('treble').value);
+    }
+
+    $('trebleValue').textContent = $('treble').value + ' dB';
+  });
+
+  $('resetEqBtn').addEventListener('click', () => {
+    $('bass').value = 0;
+    $('treble').value = 0;
+
+    if (bassFilter) bassFilter.gain.value = 0;
+    if (trebleFilter) trebleFilter.gain.value = 0;
+
+    $('bassValue').textContent = '0 dB';
+    $('trebleValue').textContent = '0 dB';
+  });
+
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    installPrompt = event;
+    $('installBtn').hidden = false;
+  });
+
+  $('installBtn').addEventListener('click', async () => {
+    if (!installPrompt) return;
+
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+
+    installPrompt = null;
+    $('installBtn').hidden = true;
+  });
+
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+
+  renderList();
+  updateFavoriteButton();
+})();
+</script>
 </body>
 </html>
+```
